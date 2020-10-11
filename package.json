@@ -18,7 +18,10 @@
   "homepage": "https://github.com/olegdemchenko/Images-Gallery#readme",
   "dependencies": {
     "bootstrap": "^4.5.2",
+    "filesize": "^6.1.0",
+    "jquery": "^3.5.1",
     "lodash": "^4.17.20",
+    "popper.js": "^1.16.1",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",

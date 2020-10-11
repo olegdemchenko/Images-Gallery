@@ -6,6 +6,73 @@
     <title>Document</title>
 </head>
 <body>
-    <div class="box">Hello world!!!</div>
+  <section class="jumbotron jumbotron-fluid mb-0 bg-white">
+    <div class="container">
+      <div class="row justify-content-center">
+          <div class="col-6 text-center">
+            <h1 class="display-4">Images gallery</h1>
+            <p class="lead">Локальная галерея изображений</p>
+          </div>
+      </div>
+    </div>
+  </section>
+  <div class="bg-success border border-success rounded-lg">
+    <div class="container p-4">
+      <button class="btn btn-light" id="addNewImage" data-toggle="modal" data-target="#modalWindow">Добавить изображение</button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 pt-4 pb-4" id="imagesStore">
+    </div>
+  </div>
+  <div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Информация о картинке</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="formContainer">
+          <form id="informationForm">
+            <div class="form-group">
+              <label for="nameInput">Название</label>
+              <input type="text" required name="title" class="form-control" id="nameInput" aria-describedby="name">
+            </div>
+            <div class="form-group">
+              <label for="fileInput">Выберите картинку</label>
+              <input type="file" required name="file" class="form-control" id="fileInput">
+            </div>
+            <div class="form-group">
+              <label for="descriptionArea">Дополнительная информация</label>
+              <textarea name="description" required id="descriptionArea" cols="30" rows="10"></textarea>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+              <button type="submit" class="btn btn-primary">Сохранить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <template id="cardTemplate">
+    <div class="col">
+        <div class="card mb-4">
+          <img src="./posts1.png" alt="" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">Название карточки</h5>
+            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti placeat facilis rem porro temporibus nulla.</p>
+          </div>
+          <div class="card-footer">
+            <div class="row row-cols-2">
+              <div class="col mb-3"><button class="btn btn-block btn-success">Скачать</button></div>
+              <div class="col mb-3"><button class="btn btn-block btn-warning">Изменить</button></div>
+              <div class="col"><button class="btn btn-block btn-danger">Удалить</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+  </template>
 </body>
 </html>
