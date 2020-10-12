@@ -18,11 +18,11 @@
   </section>
   <div class="bg-success border border-success rounded-lg">
     <div class="container p-4">
-      <button class="btn btn-light" id="addNewImage" data-toggle="modal" data-target="#modalWindow">Добавить изображение</button>
+      <button class="btn btn-light" id="addImageButton" data-toggle="modal" data-target="#modalWindow">Добавить изображение</button>
     </div>
   </div>
   <div class="container">
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 pt-4 pb-4" id="imagesStore">
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 pt-4 pb-4" id="imagesContainer">
     </div>
   </div>
   <div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -38,11 +38,11 @@
           <form id="informationForm">
             <div class="form-group">
               <label for="nameInput">Название</label>
-              <input type="text" required name="title" class="form-control" id="nameInput" aria-describedby="name">
+              <input type="text" required name="title" class="form-control" id="titleInput" aria-describedby="name">
             </div>
             <div class="form-group">
               <label for="fileInput">Выберите картинку</label>
-              <input type="file" required name="file" class="form-control" id="fileInput">
+              <input type="file" required name="file" class="form-control" id="fileInput" accept="image/*">
             </div>
             <div class="form-group">
               <label for="descriptionArea">Дополнительная информация</label>
@@ -58,17 +58,17 @@
   </div>
   <template id="cardTemplate">
     <div class="col">
-        <div class="card mb-4">
-          <img src="./posts1.png" alt="" class="card-img-top">
+        <div class="card mb-4" style="max-height: 400px;">
+          <img src="" alt="" class="card-img-top">
           <div class="card-body">
             <h5 class="card-title">Название карточки</h5>
             <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti placeat facilis rem porro temporibus nulla.</p>
           </div>
           <div class="card-footer">
             <div class="row row-cols-2">
-              <div class="col mb-3"><button class="btn btn-block btn-success">Скачать</button></div>
-              <div class="col mb-3"><button class="btn btn-block btn-warning">Изменить</button></div>
-              <div class="col"><button class="btn btn-block btn-danger">Удалить</button></div>
+              <div class="col mb-3"><a class="download-link"><button class="btn btn-block btn-success">Скачать</button></a></div>
+              <div class="col mb-3"><button class="btn btn-block btn-warning change-button" data-toggle="modal" data-target="#modalWindow">Изменить</button></div>
+              <div class="col"><button class="btn btn-block btn-danger delete-button">Удалить</button></div>
             </div>
           </div>
         </div>
