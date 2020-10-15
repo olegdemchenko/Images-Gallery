@@ -1,21 +1,37 @@
-export default (state, { addForm, imagesContainer, imageCardTemplate }) => {
-  const renderForm = (form) => {
-    form.reset();
+import { getImage, getAllImages, deleteImage } from './idbOperations';
+import catchError from './common';
+
+export default (state, db, elements) => {
+  const {
+    addForm, imagesContainer, imageCardTemplate, alertTemplate,
+  } = elements;
+
+  const renderErr = (err) => {
+    const alert = alertTemplate.content.cloneNode(true);
+    const alertTextBox = alert.querySelector('.errorMessage');
+    alertTextBox.textContent = err.message;
+    imagesContainer.before(alert);
+  };
+
+  const renderForm = async () => {
+    addForm.reset();
     if (state.formState === 'change') {
-      const { title, description } = form;
-      const imageItem = state.images.filter(({ id }) => state.changedItemId === id)[0];
-      title.value = imageItem.title;
-      description.value = imageItem.description;
+      const { title, description } = addForm;
+      const { title: imgTitle, description: imgDescription } = await catchError(getImage, renderErr, db, 'images', state.changedItemId);
+      title.value = imgTitle;
+      description.value = imgDescription;
     }
   };
 
-  const renderImages = (container, template) => {
+  const renderImages = async () => {
     /* eslint-disable no-param-reassign */
-    container.innerHTML = '';
-    state.images.forEach(({
+    imagesContainer.innerHTML = '';
+    const images = await catchError(getAllImages, renderErr, db, 'images');
+    console.log(images);
+    images.forEach(({
       id, title, description, dataUrl,
     }) => {
-      const newCard = template.content.cloneNode(true);
+      const newCard = imageCardTemplate.content.cloneNode(true);
       const cardImg = newCard.querySelector('.card-img-top');
       cardImg.src = dataUrl;
       const cardTitle = newCard.querySelector('.card-title');
@@ -32,13 +48,13 @@ export default (state, { addForm, imagesContainer, imageCardTemplate }) => {
         renderForm(addForm);
       });
       const deleteButton = newCard.querySelector('.delete-button');
-      deleteButton.addEventListener('click', () => {
-        state.images = state.images.filter(({ id: imgId }) => imgId !== id);
+      deleteButton.addEventListener('click', async () => {
+        await deleteImage(db, 'images', id);
         renderImages(imagesContainer, imageCardTemplate);
       });
-      container.append(newCard);
+      imagesContainer.append(newCard);
     });
     /* eslint-enable no-param-reassign */
   };
-  return { renderForm, renderImages };
+  return { renderForm, renderImages, renderErr };
 };
