@@ -11,7 +11,8 @@ export default async () => {
     upgrade(database) {
       if (!database.objectStoreNames.contains('images')) {
         console.log('create store');
-        database.createObjectStore('images');
+        const store = database.createObjectStore('images');
+        store.createIndex('title_idx', 'title');
       }
     },
     blocking() {
@@ -19,5 +20,6 @@ export default async () => {
       console.log('The database if out of date. Please, reload the page.');
     },
   });
+
   application(state, db);
 };

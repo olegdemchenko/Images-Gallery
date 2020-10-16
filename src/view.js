@@ -1,9 +1,6 @@
-import { getImage, getAllImages, deleteImage } from './idbOperations';
-import catchError from './common';
-
-export default (state, db, elements) => {
+export default (elements) => {
   const {
-    addForm, imagesContainer, imageCardTemplate, alertTemplate,
+    addForm, imagesContainer, imageCardTemplate, alertTemplate, imagesCountField, storageSizeBar,
   } = elements;
 
   const renderErr = (err) => {
@@ -13,20 +10,25 @@ export default (state, db, elements) => {
     imagesContainer.before(alert);
   };
 
-  const renderForm = async () => {
-    addForm.reset();
-    if (state.formState === 'change') {
-      const { title, description } = addForm;
-      const { title: imgTitle, description: imgDescription } = await catchError(getImage, renderErr, db, 'images', state.changedItemId);
-      title.value = imgTitle;
-      description.value = imgDescription;
-    }
+  const renderStorageInfo = (size, count) => {
+    imagesCountField.textContent = count;
+    storageSizeBar.setAttribute('style', `width: ${size}%`);
+    storageSizeBar.textContent = `${size}%`;
   };
 
-  const renderImages = async () => {
+  const renderForm = async (data) => {
+    if (!data) {
+      addForm.reset();
+      return;
+    }
+    const { title, description } = addForm;
+    title.value = data.title;
+    description.value = data.description;
+  };
+
+  const renderImages = async (images) => {
     /* eslint-disable no-param-reassign */
     imagesContainer.innerHTML = '';
-    const images = await catchError(getAllImages, renderErr, db, 'images');
     console.log(images);
     images.forEach(({
       id, title, description, dataUrl,
@@ -42,19 +44,16 @@ export default (state, db, elements) => {
       downloadLink.setAttribute('href', dataUrl);
       downloadLink.setAttribute('download', title);
       const changeButton = newCard.querySelector('.change-button');
-      changeButton.addEventListener('click', () => {
-        state.formState = 'change';
-        state.changedItemId = id;
-        renderForm(addForm);
-      });
+      changeButton.setAttribute('data-action', 'change');
+      changeButton.setAttribute('data-id', id);
       const deleteButton = newCard.querySelector('.delete-button');
-      deleteButton.addEventListener('click', async () => {
-        await deleteImage(db, 'images', id);
-        renderImages(imagesContainer, imageCardTemplate);
-      });
+      deleteButton.setAttribute('data-action', 'delete');
+      deleteButton.setAttribute('data-id', id);
       imagesContainer.append(newCard);
     });
     /* eslint-enable no-param-reassign */
   };
-  return { renderForm, renderImages, renderErr };
+  return {
+    renderForm, renderImages, renderStorageInfo, renderErr,
+  };
 };

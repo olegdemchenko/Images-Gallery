@@ -12,10 +12,24 @@ const getAllImages = async (db, storeName) => {
   return images;
 };
 
+const getAllFromIndex = async (db, storeName, index, key) => {
+  const res = await db.getAllFromIndex(storeName, index, key);
+  return res;
+};
+
 const deleteImage = async (db, storeName, key) => {
   await db.delete(storeName, key);
 };
 
+const getCount = async (db, storeName) => {
+  const count = await db.count(storeName);
+  return count;
+};
+
+const clearStore = async (db, storeName) => {
+  await db.clear(storeName);
+};
+
 export {
-  getImage, setImage, getAllImages, deleteImage,
+  getImage, setImage, getAllImages, deleteImage, clearStore, getCount, getAllFromIndex,
 };
