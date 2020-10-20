@@ -22,6 +22,7 @@
     "filesize": "^6.1.0",
     "idb": "^5.0.7",
     "jquery": "^3.5.1",
+    "jszip": "^3.5.0",
     "lodash": "^4.17.20",
     "popper.js": "^1.16.1",
     "regenerator-runtime": "^0.13.7",

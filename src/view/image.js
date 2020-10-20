@@ -1,35 +1,6 @@
-export default (elements) => {
-  const {
-    addForm, imagesContainer, imageCardTemplate, alertTemplate, imagesCountField, storageSizeBar,
-  } = elements;
-
-  const renderErr = (err) => {
-    const alert = alertTemplate.content.cloneNode(true);
-    const alertTextBox = alert.querySelector('.errorMessage');
-    alertTextBox.textContent = err.message;
-    imagesContainer.before(alert);
-  };
-
-  const renderStorageInfo = (size, count) => {
-    imagesCountField.textContent = count;
-    storageSizeBar.setAttribute('style', `width: ${size}%`);
-    storageSizeBar.textContent = `${size}%`;
-  };
-
-  const renderForm = async (data) => {
-    if (!data) {
-      addForm.reset();
-      return;
-    }
-    const { title, description } = addForm;
-    title.value = data.title;
-    description.value = data.description;
-  };
-
+export default ({ imagesContainer, imageCardTemplate }) => {
   const renderImages = async (images) => {
     /* eslint-disable no-param-reassign */
-    imagesContainer.innerHTML = '';
-    console.log(images);
     images.forEach(({
       id, title, description, dataUrl,
     }) => {
@@ -53,7 +24,5 @@ export default (elements) => {
     });
     /* eslint-enable no-param-reassign */
   };
-  return {
-    renderForm, renderImages, renderStorageInfo, renderErr,
-  };
+  return renderImages;
 };

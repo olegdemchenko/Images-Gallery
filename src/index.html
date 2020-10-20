@@ -43,7 +43,12 @@
       </form>
     </div>
   </div>
-  <div class="container">
+  <div class="container" id="galleryContent">
+    <div class="tagsCloud mt-4">
+      <h4>Теги</h4>
+      <div id="tagsContainer"></div>
+    </div>
+    <div id="controlPanelContainer"></div>
     <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 pt-4 pb-4" id="imagesContainer">
     </div>
   </div>
@@ -59,12 +64,16 @@
         <div class="modal-body" id="formContainer">
           <form id="informationForm">
             <div class="form-group">
-              <label for="nameInput">Название</label>
+              <label for="titleInput">Название</label>
               <input type="text" required name="title" class="form-control" id="titleInput" aria-describedby="name">
             </div>
             <div class="form-group">
               <label for="fileInput">Выберите картинку</label>
               <input type="file" required name="file" class="form-control" id="fileInput" accept="image/*">
+            </div>
+            <div class="form-group">
+              <label for="collectionName">Коллекция (необязательно)</label>
+              <input type="text" name="collection" class="form-control" id="collectionName">
             </div>
             <div class="form-group">
               <label for="descriptionArea">Дополнительная информация</label>
@@ -80,33 +89,36 @@
   </div>
   <template id="cardTemplate">
     <div class="col">
-        <div class="card text-center mb-4">
-          <img src="" alt="" class="card-img-top">
-          <div class="card-body">
-            <h5 class="card-title">Название карточки</h5>
-            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti placeat facilis rem porro temporibus nulla.</p>
-          </div>
-          <div class="card-footer">
-            <div class="row row-cols-2">
-              <div class="col mb-3"><a class="download-link"><button class="btn btn-block btn-success">Скачать</button></a></div>
-              <div class="col mb-3"><button class="btn btn-block btn-warning change-button" data-toggle="modal" data-target="#modalWindow">Изменить</button></div>
-              <div class="col"><button class="btn btn-block btn-danger delete-button">Удалить</button></div>
-            </div>
+      <div class="card text-center mb-4">
+        <img src="" alt="" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">Название карточки</h5>
+          <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate corrupti placeat facilis rem porro temporibus nulla.</p>
+        </div>
+        <div class="card-footer">
+          <div class="row row-cols-2">
+            <div class="col mb-3"><a class="download-link"><button class="btn btn-block btn-success">Скачать</button></a></div>
+            <div class="col mb-3"><button class="btn btn-block btn-warning change-button" data-toggle="modal" data-target="#modalWindow">Изменить</button></div>
+            <div class="col"><button class="btn btn-block btn-danger delete-button">Удалить</button></div>
           </div>
         </div>
       </div>
+    </div>
   </template>
   <template id="collectionTemplate">
     <div class="col">
       <div class="card border-dark text-center mb-4">
-          <div class="card-header">Collection</div>
-          <div class="row row-cols-2">
-            <div class="col mb-3"><a class="download-link"><button class="btn btn-block btn-success">Скачать</button></a></div>
-            <div class="col mb-3"><button class="btn btn-block btn-success">Просмотреть</button></div>
-            <div class="col"><button class="btn btn-block btn-danger delete-button">Удалить</button></div>
-            <div class="col"><button class="btn btn-block btn-danger delete-button">Удалить все</button></div>
-          </div>
+        <div class="card-header"></div>
+        <div class="card-footer"></div>
       </div>
+    </div>
+  </template>
+  <template id="controlPanelTemplate">
+    <div class="row">
+      <div class="col mb-3"><button class="btn btn-block btn-success delete-button back">Назад</button></div>
+      <div class="col mb-3"><button class="btn btn-block btn-success download">Скачать</button></div>
+      <div class="col mb-3"><button class="btn btn-block btn-danger delete-button delete">Удалить</button></div>
+      <div class="col mb-3"><button class="btn btn-block btn-danger delete-button deleteAll">Удалить все</button></div>
     </div>
   </template>
   <template id="alertTemplate">
