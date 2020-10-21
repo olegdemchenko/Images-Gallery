@@ -19,6 +19,7 @@ export default ({
 
   const renderControlPanel = (name) => {
     const controlPanel = createControlPanel(name);
+    controlPanel.firstElementChild.classList.add('row-cols-md-4');
     const header = document.createElement('h4');
     header.textContent = name;
     header.classList.add('mt-4', 'mb-4', 'text-center');
@@ -36,7 +37,7 @@ export default ({
     backButton.removeAttribute('data-action');
     backButton.setAttribute('data-action', 'showCollection');
     backButton.setAttribute('data-collection', name);
-    backButton.textContent = 'Просмотреть';
+    backButton.textContent = 'Cмотреть';
     const collectionFooter = collection.querySelector('.card-footer');
     collectionFooter.append(controlPanel);
     imagesContainer.append(collection);

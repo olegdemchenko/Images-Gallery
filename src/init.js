@@ -9,10 +9,9 @@ export default async () => {
     currentCollection: null,
     searchedName: null,
   };
-  const db = await openDB('imagesStore', 1, {
+  const db = await openDB('imagesStore', 2, {
     upgrade(database) {
       if (!database.objectStoreNames.contains('images')) {
-        console.log('create store');
         const images = database.createObjectStore('images');
         images.createIndex('title_idx', 'title');
         images.createIndex('collection_idx', 'collection');
@@ -23,9 +22,8 @@ export default async () => {
     },
     blocking() {
       db.close();
-      console.log('The database if out of date. Please, reload the page.');
+      alert('The database if out of date. Please, reload the page.');
     },
   });
-  // deleteDB('imagesStore');
   application(state, db);
 };

@@ -1,6 +1,7 @@
 import filesize from 'filesize';
 import uniqid from 'uniqid';
 import _ from 'lodash';
+import $ from 'jquery';
 import initImage from './view/image';
 import initCollection from './view/collection';
 import initStoreInfo from './view/storeInfo';
@@ -44,12 +45,12 @@ export default async (state, db) => {
 
   const showCollections = async () => {
     const allCollections = await getAllElems(db, 'collections');
-    const commonCollection = _.remove(allCollections, (name) => name === 'common');
+    const commonCollection = _.remove(allCollections, (name) => name === '');
     clearContent(controlPanelContainer);
     clearContent(imagesContainer);
     allCollections.forEach((collName) => renderCollection(collName));
     if (!_.isEmpty(commonCollection)) {
-      const commonCollContent = await getAllFromIndex(db, 'images', 'collection_idx', 'common');
+      const commonCollContent = await getAllFromIndex(db, 'images', 'collection_idx', '');
       renderImages(commonCollContent);
     }
   };
@@ -80,7 +81,7 @@ export default async (state, db) => {
     renderStorageInfo(percent, imagesCount);
   };
 
-  const render = async (appState) => {
+  const show = async (appState) => {
     switch (state.view) {
       case 'collectionContent': {
         showStorageInfo();
@@ -106,14 +107,14 @@ export default async (state, db) => {
   /* eslint-disable no-param-reassign */
   showAllButton.addEventListener('click', () => {
     state.view = 'all';
-    render(state);
+    show(state);
   });
 
   clearStoreButton.addEventListener('click', () => catchError(async () => {
     await clearStore(db, 'images');
     await clearStore(db, 'collections');
     state.view = 'all';
-    render(state);
+    show(state);
   }, renderErr));
 
   findByNameForm.addEventListener('submit', async (e) => catchError(async (evt) => {
@@ -121,7 +122,7 @@ export default async (state, db) => {
     const findData = new FormData(findByNameForm);
     state.searchedName = findData.get('name');
     state.view = 'search';
-    render(state);
+    show(state);
   }, renderErr, e));
 
   addImageButton.addEventListener('click', () => {
@@ -145,17 +146,17 @@ export default async (state, db) => {
       case 'showCollection': {
         state.view = 'collectionContent';
         state.currentCollection = collectionName;
-        render(state);
+        show(state);
         break;
       }
       case 'deleteCollection': {
         await deleteElem(db, 'collections', collectionName);
         const collectionElems = await getAllFromIndex(db, 'images', 'collection_idx', collectionName);
         await Promise.all(collectionElems.map(({ id: elemId }) => deleteElem(db, 'images', elemId)));
-        const commonCollectionElements = collectionElems.map((elem) => ({ ...elem, collection: 'common' }));
+        const commonCollectionElements = collectionElems.map((elem) => ({ ...elem, collection: '' }));
         await Promise.all(commonCollectionElements.map((elem) => setElem(db, 'images', elem, elem.id)));
         state.view = 'all';
-        render(state);
+        show(state);
         break;
       }
       case 'deleteCollection&Content': {
@@ -163,12 +164,12 @@ export default async (state, db) => {
         const collectionElems = await getAllFromIndex(db, 'images', 'collection_idx', collectionName);
         await Promise.all(collectionElems.map(({ id: elemId }) => deleteElem(db, 'images', elemId)));
         state.view = 'all';
-        render(state);
+        show(state);
         break;
       }
       case 'back': {
         state.view = 'all';
-        render(state);
+        show(state);
         break;
       }
       case 'change': {
@@ -180,7 +181,7 @@ export default async (state, db) => {
       }
       case 'delete': {
         await deleteElem(db, 'images', id);
-        render(state);
+        show(state);
         break;
       }
       default:
@@ -196,7 +197,7 @@ export default async (state, db) => {
       throw new Error('Wrong type of file');
     }
     const id = state.formState === 'add' ? uniqid() : state.changedItemId;
-    const collection = formData.get('collection') || 'common';
+    const collection = formData.get('collection');
     const doesCollectionExist = await getElem(db, 'collections', collection);
     if (!doesCollectionExist) {
       await setElem(db, 'collections', collection, collection);
@@ -219,7 +220,8 @@ export default async (state, db) => {
       await deleteElem(db, 'images', state.changedItemId);
     }
     await setElem(db, 'images', data, id);
-    render(state);
+    $('#modalWindow').modal('hide');
+    show(state);
   }, renderErr, evt));
-  catchError(render, renderErr, state);
+  catchError(show, renderErr, state);
 };
