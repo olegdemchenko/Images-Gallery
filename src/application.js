@@ -77,8 +77,9 @@ export default async (state, db) => {
       return;
     }
     const { usage, quota } = storageInfo;
-    const percent = Math.round(usage / quota) * 100;
-    renderStorageInfo(percent, imagesCount);
+    const usageInGb = filesize(usage, { exponent: 3 });
+    const quotaInGb = filesize(quota, { exponent: 3 });
+    renderStorageInfo({ usageInGb, quotaInGb }, imagesCount);
   };
 
   const show = async (appState) => {

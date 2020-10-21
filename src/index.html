@@ -19,17 +19,15 @@
   <div class="bg-success border border-success rounded-lg">
     <div class="container pt-4">
       <p>Кoличество изображений: <span id="imagesCount"></span></p>
-      <p>Kоличество свободного пространства</p>
-      <div class="progress">
-        <div class="progress-bar bg-danger" id="storageSize" role="progressbar" style="width: 0" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+      <p>Kоличество свободного пространства:</p>
+      <div id="storageSize"><p></p></div>
     </div>
-    <div class="container p-4">
+    <div class="container pb-4">
       <button class="btn btn-light mt-4 mr-4" id="addImage" data-toggle="modal" data-target="#modalWindow">Добавить изображение</button>
       <button class="btn btn-light mt-4 mr-4" id="clearStore">Очистить хранилище</button>
       <button class="btn btn-light mt-4" id="showAll">Показать все</button>
     </div>
-    <div class="container p-4">
+    <div class="container pb-4">
       <form id="findByNameForm">
         <div class="row align-items-end">
           <div class="col-9">
