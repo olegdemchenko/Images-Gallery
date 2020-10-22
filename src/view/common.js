@@ -10,7 +10,7 @@ export default (elements) => {
   const downloadFile = ({ name, content }) => {
     const link = document.createElement('a');
     link.setAttribute('href', content);
-    link.setAttribute('download', name);
+    link.setAttribute('download', `${name}.zip`);
     link.click();
   };
 
