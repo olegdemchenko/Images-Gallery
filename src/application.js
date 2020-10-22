@@ -58,7 +58,7 @@ export default async (state, db) => {
   const showTags = async () => {
     const collections = await getAllElems(db, 'collections');
     clearContent(tagsContainer);
-    renderTags(collections.filter((coll) => coll !== 'common'));
+    renderTags(collections.filter((coll) => coll !== ''));
   };
 
   const showCollectionContent = async (name) => {
